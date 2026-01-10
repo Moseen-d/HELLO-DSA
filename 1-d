@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <string.h>
+
+#define DAYS 7
+
+typedef struct
+{
+    char day[20];
+    int date;
+    char activity[100];
+} Day;
+
+int main()
+{
+    Day cal[DAYS];
+    char choice;
+
+    for(int i=0;i<DAYS;i++)
+        cal[i].date = 0;
+
+    for(int i=0;i<DAYS;i++)
+    {
+        printf("Do you want to enter details for day %d (y/n): ",i+1);
+        scanf(" %c",&choice);
+
+        if(choice=='n' || choice=='N')
+            continue;
+
+        printf("Day Name: ");
+        scanf("%s", cal[i].day);
+
+        printf("Date: ");
+        scanf("%d", &cal[i].date);
+
+        getchar();   // clear newline left by scanf
+
+        printf("Activity: ");
+        fgets(cal[i].activity, 100, stdin);
+
+        // remove newline from fgets
+        cal[i].activity[strcspn(cal[i].activity,"\n")] = '\0';
+
+        printf("\n");
+    }
+
+    printf("\nWeekly Activities\n");
+    for(int i=0;i<DAYS;i++)
+    {
+        printf("Day %d:\n",i+1);
+
+        if(cal[i].date == 0)
+        {
+            printf("No Activity\n\n");
+            continue;
+        }
+
+        printf("Day Name: %s\n", cal[i].day);
+        printf("Date: %d\n", cal[i].date);
+        printf("Activity: %s\n\n", cal[i].activity);
+    }
+
+    return 0;
+}
