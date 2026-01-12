@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DAYS 7
+
+struct Day
+{
+    char *name;
+    int date;
+    char *work;
+};
+
+int main()
+{
+    struct Day *week;
+    int i;
+    char ch;
+
+    /* create calendar for 7 days */
+    week = (struct Day *)malloc(DAYS * sizeof(struct Day));
+
+    /* allocate memory for strings */
+    for(i = 0; i < DAYS; i++)
+    {
+        week[i].name = (char *)malloc(20);
+        week[i].work = (char *)malloc(100);
+        week[i].date = 0;
+    }
+
+    /* read data */
+    for(i = 0; i < DAYS; i++)
+    {
+        printf("\nEnter details for Day %d (y/n): ", i+1);
+        scanf(" %c", &ch);
+
+        if(ch == 'n' || ch == 'N')
+            continue;
+
+        printf("Day name: ");
+        scanf("%s", week[i].name);
+
+        printf("Date: ");
+        scanf("%d", &week[i].date);
+
+        printf("Activity: ");
+        scanf(" %[^\n]", week[i].work);
+    }
+
+    /* display */
+    printf("\n--- Weekly Report ---\n");
+
+    for(i = 0; i < DAYS; i++)
+    {
+        printf("\nDay %d\n", i+1);
+
+        if(week[i].date == 0)
+            printf("No Activity\n");
+        else
+        {
+            printf("Name : %s\n", week[i].name);
+            printf("Date : %d\n", week[i].date);
+            printf("Work : %s\n", week[i].work);
+        }
+    }
+
+    return 0;
+}
