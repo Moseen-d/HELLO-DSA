@@ -1,0 +1,61 @@
+#include <stdio.h>
+
+#define DAYS 7
+
+struct Day
+{
+    char name[20];
+    int date;
+    char work[100];
+};
+
+int main()
+{
+    struct Day week[DAYS];
+    int i;
+    char ch;
+
+    /* Initialize dates */
+    for(i = 0; i < DAYS; i++)
+        week[i].date = 0;
+
+    /* Input */
+    for(i = 0; i < DAYS; i++)
+    {
+        printf("\nEnter details for Day %d ? (y/n): ", i+1);
+        scanf(" %c", &ch);
+
+        if(ch == 'n' || ch == 'N')
+            continue;
+
+        printf("Day name: ");
+        scanf("%s", week[i].name);
+
+        printf("Date: ");
+        scanf("%d", &week[i].date);
+
+        printf("Activity: ");
+        scanf(" %[^\n]", week[i].work);   // reads full line
+    }
+
+    /* Display */
+    printf("\n--- Weekly Activities ---\n");
+
+    for(i = 0; i < DAYS; i++)
+    {
+        printf("\nDay %d\n", i+1);
+
+        if(week[i].date == 0)
+        {
+            printf("No Activity\n");
+        }
+        else
+        {
+            printf("Name   : %s\n", week[i].name);
+            printf("Date   : %d\n", week[i].date);
+            printf("Work   : %s\n", week[i].work);
+        }
+    }
+
+    return 0;
+}
