@@ -1,0 +1,20 @@
+#include<stdio.h>
+#include <math.h>
+void toh(int n, int s,int t, int d)
+{
+    if(n==0)
+    return;
+    toh(n-1,s,d,t);
+    printf("move  disk %d from %c to %c\n",n,s,d,t);
+    toh(n-1,t,s,d);
+    
+}
+void main()
+{
+    int n ;
+    printf("enter the value");
+    scanf("%d",&n);
+    toh(n,'A','B','C');
+    printf("the number of mover are %d",(int)pow(2,n)-1);
+    
+}
