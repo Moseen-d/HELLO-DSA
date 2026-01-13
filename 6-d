@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 4
+
+int ch, front = 0, rear = -1, count = 0;
+char q[MAX], item;
+
+/* Insert operation */
+void insert()
+{
+    if (count == MAX)
+        printf("\nQueue is Full");
+    else
+    {
+        rear = (rear + 1) % MAX;
+        q[rear] = item;
+        count++;
+    }
+}
+
+/* Delete operation */
+void del()
+{
+    if (count == 0)
+        printf("\nQueue is Empty");
+    else
+    {
+        item = q[front];
+        printf("\nDeleted item is: %c", item);
+        front = (front + 1) % MAX;
+        count--;
+    }
+}
+
+/* Display operation */
+void display()
+{
+    int i, pos;
+
+    if (count == 0)
+    {
+        printf("\nQueue is Empty");
+    }
+    else
+    {
+        printf("\nContents of Queue:\n");
+        pos = front;
+        for (i = 1; i <= count; i++)
+        {
+            printf("%c\t", q[pos]);
+            pos = (pos + 1) % MAX;
+        }
+    }
+}
+
+/* Main function */
+int main()
+{
+    do
+    {
+        printf("\n\n1. Insert");
+        printf("\n2. Delete");
+        printf("\n3. Display");
+        printf("\n4. Exit");
+        printf("\nEnter the choice: ");
+        scanf("%d", &ch);
+
+        switch (ch)
+        {
+        case 1:
+            printf("\nEnter the character to insert: ");
+            scanf(" %c", &item);   // space before %c fixes input problem
+            insert();
+            break;
+
+        case 2:
+            del();
+            break;
+
+        case 3:
+            display();
+            break;
+
+        case 4:
+            exit(0);
+
+        default:
+            printf("\nInvalid choice");
+        }
+
+    } while (ch != 4);
+
+    return 0;
+}
