@@ -1,95 +1,95 @@
-#include <stdio.h>
+#include<stdio.h>
 #include <stdlib.h>
 
-#define MAX 4
 
-int ch, front = 0, rear = -1, count = 0;
+#define MAX  4
+int ch, front = 0, rear = -1, count=0; 
 char q[MAX], item;
-
-/* Insert operation */
 void insert()
 {
-    if (count == MAX)
-        printf("\nQueue is Full");
-    else
-    {
-        rear = (rear + 1) % MAX;
-        q[rear] = item;
-        count++;
-    }
-}
 
-/* Delete operation */
+if(count == MAX) printf("\nQueue is Full");
+else {
+
+rear = (rear + 1) % MAX; 
+q[rear]=item;
+
+count++;
+}
+}
 void del()
 {
-    if (count == 0)
-        printf("\nQueue is Empty");
-    else
-    {
-        item = q[front];
-        printf("\nDeleted item is: %c", item);
-        front = (front + 1) % MAX;
-        count--;
-    }
-}
+if(count == 0)
+printf("\nQueue is Empty");
+else
+{
+if(front > rear && rear==MAX-1)
 
-/* Display operation */
+{
+
+front=0;
+rear=-1;
+count=0;
+}
+else
+{
+item=q[front];
+
+printf("\nDeleted item is: %c",item); 
+front = (front + 1) %MAX; 
+count--;
+}
+}
+}
 void display()
 {
-    int i, pos;
 
-    if (count == 0)
-    {
-        printf("\nQueue is Empty");
-    }
-    else
-    {
-        printf("\nContents of Queue:\n");
-        pos = front;
-        for (i = 1; i <= count; i++)
-        {
-            printf("%c\t", q[pos]);
-            pos = (pos + 1) % MAX;
-        }
-    }
+int i, f=front, r=rear; 
+if(count == 0)
+printf("\nQueue is Empty");
+else
+{
+
+printf("\nContents of Queue is:\n"); for(i=f; i<=r; i++)
+
+{
+
+printf("%c\t", q[i]); 
+f = (f + 1) % MAX;
+}
 }
 
-/* Main function */
-int main()
+}
+void main()
+
 {
-    do
-    {
-        printf("\n\n1. Insert");
-        printf("\n2. Delete");
-        printf("\n3. Display");
-        printf("\n4. Exit");
-        printf("\nEnter the choice: ");
-        scanf("%d", &ch);
 
-        switch (ch)
-        {
-        case 1:
-            printf("\nEnter the character to insert: ");
-            scanf(" %c", &item);   // space before %c fixes input problem
-            insert();
-            break;
+do
 
-        case 2:
-            del();
-            break;
+{
 
-        case 3:
-            display();
-            break;
+printf("\n1. Insert\n2. Delete\n3. Display\n4. Exit"); 
+printf("\nEnter the choice: ");
 
-        case 4:
-            exit(0);
+scanf("%d", &ch); 
+switch(ch)
 
-        default:
-            printf("\nInvalid choice");
-        }
+{
 
-    } while (ch != 4);
+case 1: printf("\nEnter the character / item to be inserted: "); 
+		scanf(" %c", &item);
 
-    return 0;
+		insert();
+		break; 
+case 2: del(); 
+	break;
+
+case 3: display(); 
+    break;
+
+case 4: exit(0);
+	 break;
+}
+
+}while(ch!=4);
 }
