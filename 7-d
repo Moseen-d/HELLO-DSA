@@ -1,273 +1,194 @@
-#include <stdio.h>
-int MAX=4,count;
+#include<stdio.h>
+#include<stdlib.h>
+
+#define MAX 4
+
 struct student
 {
-
-    char USN[10];
-    char NAME[30];
-    char BRANCH[5];
-    int SEM;
-    char PHNO[10];
-    struct student*next;
+    char usn[10], name[20], branch[10], ph[12];
+    int sem;
+    struct student *next;
 };
-    typedef struct  student NODE;
-    int countnodes(NODE*head)
-    {
+typedef struct student NODE;
 
-        NODE*p;
-        count=0;
-        p=head;
-        while(p!=NULL)
-        {
+int count = 0;
 
-            p=p->next;
-            count++;
-        }
-        return count;
-    }
-    NODE*getnode(NODE*head)
+/* Create new node */
+NODE* getnode()
+{
+    NODE *newn = (NODE*)malloc(sizeof(NODE));
+    printf("\nEnter USN Name Branch Sem Phone: ");
+    scanf("%s %s %s %d %s", newn->usn, newn->name,
+          newn->branch, &newn->sem, newn->ph);
+    newn->next = NULL;
+    return newn;
+}
+
+/* Insert at front (PUSH for stack) */
+NODE* insert_front(NODE *head)
+{
+    if(count == MAX)
     {
-        NODE*newnode;
-        newnode=(NODE*)malloc(sizeof(NODE));
-        printf("\nEnter USN,NAME,BRANCH,SEM,PHNO\n");
-        scanf("%s",newnode->USN);
-        scanf("%s",newnode->NAME);
-       scanf("%s",newnode->BRANCH);
-        scanf("%d",&(newnode->SEM));
-        scanf("%s",newnode->PHNO);
-        newnode->next=NULL;
-        head=newnode;
+        printf("List Full\n");
         return head;
     }
-    NODE*display(NODE*head)
+    NODE *newn = getnode();
+    newn->next = head;
+    head = newn;
+    count++;
+    return head;
+}
+
+/* Insert at rear (INSERT for queue) */
+NODE* insert_rear(NODE *head)
+{
+    if(count == MAX)
     {
-
-        NODE *p;
-        if(head==NULL)
-            printf("\nNo student data\n");
-        else{
-            p=head;
-            printf("\n-----STUDENT DATA---");
-            printf("\nUSN\tNAME\tBRANCH\tSEM\tPHNO");
-            while(p!=NULL)
-            {
-
-                printf("\n%s\t%s\t%s\t%d\t%s",p->USN,p->NAME,p->BRANCH,p->SEM,p->PHNO);
-                p=p->next;
-            }
-            printf("\nThe no of nodes in list is %d",countnodes(head));
-        }
+        printf("List Full\n");
         return head;
     }
-    NODE*create(NODE*head)
+
+    NODE *newn = getnode();
+
+    if(head == NULL)
     {
+        count++;
+        return newn;
+    }
 
-        NODE*newnode;
-        if(head==NULL)
-        {
+    NODE *p = head;
+    while(p->next != NULL)
+        p = p->next;
 
-            newnode=getnode(head);
-            head=newnode;
-        }
-        else{
-            newnode=getnode(head);
-            newnode->next=head;
-            head=newnode;
-        }
+    p->next = newn;
+    count++;
+    return head;
+}
+
+/* Delete front (POP for stack, DELETE for queue) */
+NODE* delete_front(NODE *head)
+{
+    if(head == NULL)
+    {
+        printf("List Empty\n");
         return head;
     }
-    NODE*insert_front(NODE*head)
-    {
+    NODE *temp = head;
+    head = head->next;
+    printf("Deleted: %s\n", temp->usn);
+    free(temp);
+    count--;
+    return head;
+}
 
-        if(countnodes(head)==MAX)
-            printf("\n list is Full //overflow!!");
-        else
-            head=create(head);
+/* Delete rear */
+NODE* delete_rear(NODE *head)
+{
+    NODE *p, *q;
+
+    if(head == NULL)
         return head;
+
+    if(head->next == NULL)
+    {
+        free(head);
+        return NULL;
     }
-    NODE*insert_rear(NODE*head)
+
+    p = head;
+
+    while(p->next != NULL)
     {
-
-        NODE*p,*newnode;
-        p=head;
-        if(countnodes(head)==MAX)
-            printf("\n List is Full(QUEUE)!!");
-        else{
-            if(head==NULL)
-            {
-
-                newnode=getnode(head);
-                head=newnode;
-            }
-            else{
-                newnode=getnode(head);
-                while(p->next!=NULL)
-                {
-
-                    p=p->next;
-                }
-                p->next=newnode;
-            }
-        }
-        return head;
+        q = p;
+        p = p->next;
     }
-    NODE*insert(NODE*head)
+
+    free(p);
+    q->next = NULL;
+
+    printf("\nLast(end) entry is deleted");
+    return head;
+}
+
+/* Display */
+void display(NODE *head)
+{
+    NODE *p = head;
+    if(head == NULL)
     {
-
-        int ch;
-        do
-        {
-
-            printf("\n 1.insert at front(first)\t 2.insert at end(rear/last)\t 3.exit");
-            printf("\nEnter your choice:");
-            scanf("%d",&ch);
-            switch(ch)
-            {
-
-            case 1:head=insert_front(head);
-            break;
-            case 2:head=insert_rear(head);
-            break;
-            case 3:break;
-
-            }
-            head=display(head);
-        }
-        while(ch!=3);
-        return head;
+        printf("No data\n");
+        return;
     }
-    NODE*delete_front(NODE*head)
+
+    printf("\nUSN  NAME  BRANCH  SEM  PHONE\n");
+    while(p != NULL)
     {
-        NODE*p;
-        if(head==NULL)
-            printf("\n List is empty/underflow(stack/Queue)");
-        else
+        printf("%s %s %s %d %s\n",
+               p->usn, p->name, p->branch, p->sem, p->ph);
+        p = p->next;
+    }
+}
+
+/* Stack Menu */
+NODE* stack(NODE *head)
+{
+    int ch;
+    do
+    {
+        printf("\nSTACK MENU\n1.PUSH\n2.POP\n3.EXIT\n");
+        scanf("%d",&ch);
+        switch(ch)
         {
-
-            p=head;
-            head=head->next;
-            printf("\n Front(first)node is delete");
+            case 1: head = insert_front(head); break;
+            case 2: head = delete_front(head); break;
         }
-        return head;
+        display(head);
+    } while(ch != 3);
 
-        }
-        NODE*delete_rear(NODE*head)
+    return head;
+}
+
+/* Queue Menu */
+NODE* queue(NODE *head)
+{
+    int ch;
+    do
+    {
+        printf("\nQUEUE MENU\n1.INSERT\n2.DELETE\n3.EXIT\n");
+        scanf("%d",&ch);
+        switch(ch)
         {
-                NODE*p,*q;p=head;
-            while(p->next->next!=NULL)
-            {
-
-                p=p->next;
-            }
-             q=p->next;
-            free(q);
-            p->next=NULL;
-            printf("\n Last(end)entry is delete");
-            return head;
+            case 1: head = insert_rear(head); break;
+            case 2: head = delete_front(head); break;
         }
-        NODE*del(NODE*head)
+        display(head);
+    } while(ch != 3);
+
+    return head;
+}
+
+/* Main */
+void main()
+{
+    NODE *head = NULL;
+    int ch;
+
+    while(1)
+    {
+        printf("\n1.Insert Front\n2.Insert Rear\n3.Delete Front\n4.Delete Rear");
+        printf("\n5.Display\n6.Stack\n7.Queue\n8.Exit\n");
+        scanf("%d",&ch);
+
+        switch(ch)
         {
-
-            int ch;
-            do{
-                printf("\n 1.delete from front(first)\t 2.delete from end(read/last)\t 3.exit");
-                       printf("\n Enter your choice:");
-                       scanf("%d",&ch);
-                       switch(ch)
-                       {
-
-                           case 1:head=delete_front(head);
-                           break;
-                           case 2:head=delete_rear(head);
-                           break;
-                           case 3:break;
-                       }
-                       head=display(head);
-            }
-            while(ch!=3);
-            return head;
+            case 1: head = insert_front(head); break;
+            case 2: head = insert_rear(head); break;
+            case 3: head = delete_front(head); break;
+            case 4: head = delete_rear(head); break;
+            case 5: display(head); break;
+            case 6: head = stack(head); break;
+            case 7: head = queue(head); break;
+            case 8: exit(0);
         }
-        NODE*stack(NODE*head)
-        {
-
-            int ch;
-            do{
-                printf("\n SSL used as stack.....");
-                printf("\n 1.insert at front(PUSH)\t 2.delete from front(POP)\t 3.exit");
-                printf("\n Enter your choice:");
-                scanf("%d",&ch);
-                switch(ch)
-                {
-
-                    case 1:head=insert_front(head);
-                    break;
-                    case 2:head=delete_front(head);
-                    break;
-                    case 3:break;
-                }
-                head=display(head);
-            }
-            while(ch!=3);
-            return head;
-        }
-        NODE*queue(NODE*head)
-        {
-
-            int ch;
-            do
-            {
-
-                printf("\n SSL used as queue.");
-                printf("\n 1.insert at rear(insert)\t 2.delete from front(delete)\t 3.exit");
-                printf("\n Enter your choice:");
-                scanf("%d",&ch);
-                switch(ch)
-                {
-
-                    case 1:head=insert_rear(head);
-                    break;
-                    case 2: head=delete_front(head);
-                    break;
-                    case 3:break;
-                }
-                head=display(head);
-            }
-            while(ch!=3);
-            return head;
-        }
-        void main()
-        {
-
-            int ch, i,n;
-            NODE*head;
-            head=NULL;
-            printf("\n ------------student database----------*");
-            do
-            {
-
-                printf("\n 1.create\t 2.display\t 3.insert\t 4.delete\t 5.stack\t 6.queue\t 7.exit");
-                printf("\nEnter your choice:");
-                scanf("%d",&ch);
-                switch(ch)
-                {
-
-                    case 1:printf("\n how many student data you want to create:");
-                    scanf("%d",&n);
-                    for(i=0;i<n;i++)
-                        head=create(head);
-                    break;
-                    case 2:head=display(head);
-                    break;
-                    case 3:head=insert(head);
-                    break;
-                    case 4:head=del(head);
-                    break;
-                    case 5:head=stack(head);
-                    break;
-                    case 6:head=queue(head);
-                    break;
-                    case 7:exit(0);
-                }
-            }
-            while(ch!=7);
-        }
+    }
+}
