@@ -1,0 +1,118 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define MAX 5
+
+int stack[MAX];
+int top = -1;
+
+/* Function prototypes */
+void push();
+void pop();
+void display();
+void palindrome();
+
+int main()
+{
+    int choice;
+
+    while(1)
+    {
+        printf("\n\n------ STACK OPERATIONS ------");
+        printf("\n1. Push");
+        printf("\n2. Pop");
+        printf("\n3. Palindrome");
+        printf("\n4. Display");
+        printf("\n5. Exit");
+        printf("\n-----------------------------");
+        printf("\nEnter your choice: ");
+        scanf("%d",&choice);
+
+        switch(choice)
+        {
+            case 1: push(); break;
+            case 2: pop(); break;
+            case 3: palindrome(); break;
+            case 4: display(); break;
+            case 5: exit(0);
+            default: printf("\nInvalid choice");
+        }
+    }
+}
+
+/* Push operation */
+void push()
+{
+    int item;
+    if(top == MAX-1)
+        printf("\nStack Overflow");
+    else
+    {
+        printf("\nEnter element: ");
+        scanf("%d",&item);
+        top++;
+        stack[top] = item;
+    }
+}
+
+/* Pop operation */
+void pop()
+{
+    if(top == -1)
+        printf("\nStack Underflow");
+    else
+    {
+        printf("\nDeleted element = %d", stack[top]);
+        top--;
+    }
+}
+
+/* Display stack */
+void display()
+{
+    int i;
+    if(top == -1)
+        printf("\nStack is Empty");
+    else
+    {
+        printf("\nStack elements:\n");
+        for(i = top; i >= 0; i--)
+            printf("%d\n", stack[i]);
+    }
+}
+
+/* Palindrome function using org[] and rev[] */
+void palindrome()
+{
+    int org[MAX], rev[MAX];
+    int i, flag = 1;
+
+    if(top == -1)
+    {
+        printf("\nStack is Empty");
+        return;
+    }
+
+    /* Copy stack into org[] */
+    for(i = 0; i <= top; i++)
+        org[i] = stack[i];
+
+    /* Reverse stack into rev[] */
+    for(i = 0; i <= top; i++)
+        rev[i] = stack[top - i];
+
+    /* Compare */
+    for(i = 0; i <= top; i++)
+    {
+        if(org[i] != rev[i])
+        {
+            flag = 0;
+            break;
+        }
+    }
+
+    if(flag == 1)
+        printf("\nStack is Palindrome");
+    else
+        printf("\nStack is NOT Palindrome");
+}
