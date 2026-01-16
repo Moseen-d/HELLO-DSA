@@ -1,177 +1,157 @@
 #include<stdio.h>
 #include<stdlib.h>
+#define MAX 4
 
-struct emp
-{
-    int ssn, sal;
-    char name[20], dept[10], desig[15], phno[12];
-    struct emp *left, *right;
+struct emp {
+    char ssn[10], name[10], dept[10];
+    int salary;
+    struct emp *right, *left;
 };
 typedef struct emp NODE;
 
-/* Create node */
-NODE* getnode()
+int count = 0;
+
+NODE *getnode()
 {
-    NODE *n = (NODE*)malloc(sizeof(NODE));
-    printf("Enter SSN Name Dept Desig Salary Phone:\n");
-    scanf("%d %s %s %s %d %s",
-          &n->ssn, n->name, n->dept, n->desig, &n->sal, n->phno);
-    n->left = n->right = NULL;
-    return n;
+    NODE *nw = (NODE *)malloc(sizeof(NODE));
+    printf("enter SSN NAME DEPT SALARY\n");
+    scanf("%s %s %s %d", nw->ssn, nw->name, nw->dept, &nw->salary);
+    nw->right = nw->left = NULL;
+    return nw;
 }
 
-/* Insert End */
-NODE* insert_end(NODE *head)
+NODE *in_front(NODE *head)
 {
-    NODE *n = getnode();
-    if(head == NULL) return n;
-
-    NODE *p = head;
-    while(p->right != NULL) p = p->right;
-    p->right = n;
-    n->left = p;
-    return head;
-}
-
-/* Insert Front */
-NODE* insert_front(NODE *head)
-{
-    NODE *n = getnode();
-    if(head != NULL)
+    if(count == MAX)
     {
-        n->right = head;
-        head->left = n;
-    }
-    return n;
-}
-
-/* Delete Front */
-NODE* delete_front(NODE *head)
-{
-    if(head == NULL)
-    {
-        printf("Queue Empty\n");
+        printf("full\n");
         return head;
     }
 
-    NODE *t = head;
-    head = head->right;
+    NODE *nw = getnode();
+
     if(head != NULL)
-        head->left = NULL;
-    free(t);
+    {
+        nw->right = head;
+        head->left = nw;
+    }
+
+    count++;
+    return nw;
+}
+
+NODE *in_rear(NODE *head)
+{
+    if(count == MAX)
+    {
+        printf("full\n");
+        return head;
+    }
+
+    NODE *nw = getnode();
+
+    if(head == NULL)
+    {
+        count++;
+        return nw;
+    }
+
+    NODE *p = head;
+    while(p->right != NULL)
+    {
+        p = p->right;
+    }
+
+    p->right = nw;
+    nw->left = p;
+    count++;
     return head;
 }
 
-/* Delete End */
-NODE* delete_end(NODE *head)
+NODE *del_front(NODE *head)
 {
-    if(head == NULL)
+    if(count == 0)
     {
-        printf("Queue Empty\n");
+        printf("empty\n");
+        return head;
+    }
+
+    NODE *p = head;
+    head = head->right;
+
+    if(head != NULL)
+        head->left = NULL;
+
+    free(p);
+    count--;
+    return head;
+}
+
+NODE *del_rear(NODE *head)
+{
+    if(count == 0)
+    {
+        printf("empty\n");
         return head;
     }
 
     if(head->right == NULL)
     {
         free(head);
+        count--;
         return NULL;
     }
 
     NODE *p = head;
     while(p->right != NULL)
+    {
         p = p->right;
+    }
 
     p->left->right = NULL;
     free(p);
+    count--;
     return head;
 }
 
-/* Display */
 void display(NODE *head)
 {
-    NODE *p = head;
-    int c = 0;
-
-    if(head == NULL)
+    if(count == 0)
     {
-        printf("No Data\n");
+        printf("empty\n");
         return;
     }
 
-    printf("\nSSN Name Dept Desig Salary Phone\n");
+    NODE *p = head;
+    printf("\nSSN NAME DEPT SALARY\n");
     while(p != NULL)
     {
-        printf("%d %s %s %s %d %s\n",
-               p->ssn, p->name, p->dept, p->desig, p->sal, p->phno);
+        printf("%s %s %s %d\n",
+               p->ssn, p->name, p->dept, p->salary);
         p = p->right;
-        c++;
     }
-    printf("Count = %d\n", c);
 }
 
-/* Double Ended Queue */
-NODE* queue(NODE *head)
+int main()
 {
     int ch;
-    do
-    {
-        printf("\n--- DOUBLE ENDED QUEUE ---");
-        printf("\n1.Insert Front");
-        printf("\n2.Insert End");
-        printf("\n3.Delete Front");
-        printf("\n4.Delete End");
-        printf("\n5.Exit");
-        printf("\nEnter choice: ");
-        scanf("%d",&ch);
-
-        switch(ch)
-        {
-            case 1: head = insert_front(head); break;
-            case 2: head = insert_end(head); break;
-            case 3: head = delete_front(head); break;
-            case 4: head = delete_end(head); break;
-        }
-        display(head);
-
-    } while(ch != 5);
-
-    return head;
-}
-
-/* Main */
-void main()
-{
     NODE *head = NULL;
-    int ch, n, i;
 
-    while(1)
-    {
-        printf("\n1.Create");
-        printf("\n2.Display");
-        printf("\n3.Insert Front");
-        printf("\n4.Insert End");
-        printf("\n5.Delete Front");
-        printf("\n6.Delete End");
-        printf("\n7.Queue");
-        printf("\n8.Exit\n");
-        scanf("%d",&ch);
+    do {
+        printf("\n1.insert front 2.insert rear 3.del front 4.del rear 5.display 6.exit\n");
+        printf("enter your choice : ");
+        scanf("%d", &ch);
 
         switch(ch)
         {
-            case 1:
-                printf("How many employees? ");
-                scanf("%d",&n);
-                for(i=0;i<n;i++)
-                    head = insert_end(head);
-                break;
-
-            case 2: display(head); break;
-            case 3: head = insert_front(head); break;
-            case 4: head = insert_end(head); break;
-            case 5: head = delete_front(head); break;
-            case 6: head = delete_end(head); break;
-            case 7: head = queue(head); break;
-            case 8: exit(0);
+            case 1: head = in_front(head); break;
+            case 2: head = in_rear(head); break;
+            case 3: head = del_front(head); break;
+            case 4: head = del_rear(head); break;
+            case 5: display(head); break;
+            case 6: exit(0);
         }
-    }
+    } while(ch != 6);
+
+    return 0;
 }
