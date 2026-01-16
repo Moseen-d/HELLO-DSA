@@ -1,30 +1,34 @@
 #include<stdio.h>
 #include<stdlib.h>
+
 #define MAX 4
 
-struct emp {
+struct emp
+{
     char ssn[10], name[10], dept[10];
     int salary;
-    struct emp *right, *left;
+    struct emp *left, *right;
 };
 typedef struct emp NODE;
 
 int count = 0;
 
+/* Create Node */
 NODE *getnode()
 {
     NODE *nw = (NODE *)malloc(sizeof(NODE));
-    printf("enter SSN NAME DEPT SALARY\n");
+    printf("Enter SSN NAME DEPT SALARY:\n");
     scanf("%s %s %s %d", nw->ssn, nw->name, nw->dept, &nw->salary);
-    nw->right = nw->left = NULL;
+    nw->left = nw->right = NULL;
     return nw;
 }
 
+/* Insert at Front */
 NODE *in_front(NODE *head)
 {
     if(count == MAX)
     {
-        printf("full\n");
+        printf("List is Full\n");
         return head;
     }
 
@@ -40,11 +44,12 @@ NODE *in_front(NODE *head)
     return nw;
 }
 
+/* Insert at Rear */
 NODE *in_rear(NODE *head)
 {
     if(count == MAX)
     {
-        printf("full\n");
+        printf("List is Full\n");
         return head;
     }
 
@@ -58,21 +63,21 @@ NODE *in_rear(NODE *head)
 
     NODE *p = head;
     while(p->right != NULL)
-    {
         p = p->right;
-    }
 
     p->right = nw;
     nw->left = p;
+
     count++;
     return head;
 }
 
+/* Delete Front */
 NODE *del_front(NODE *head)
 {
     if(count == 0)
     {
-        printf("empty\n");
+        printf("List is Empty\n");
         return head;
     }
 
@@ -87,11 +92,12 @@ NODE *del_front(NODE *head)
     return head;
 }
 
+/* Delete Rear */
 NODE *del_rear(NODE *head)
 {
     if(count == 0)
     {
-        printf("empty\n");
+        printf("List is Empty\n");
         return head;
     }
 
@@ -104,9 +110,7 @@ NODE *del_rear(NODE *head)
 
     NODE *p = head;
     while(p->right != NULL)
-    {
         p = p->right;
-    }
 
     p->left->right = NULL;
     free(p);
@@ -114,32 +118,68 @@ NODE *del_rear(NODE *head)
     return head;
 }
 
+/* Display */
 void display(NODE *head)
 {
     if(count == 0)
     {
-        printf("empty\n");
+        printf("List is Empty\n");
         return;
     }
 
     NODE *p = head;
-    printf("\nSSN NAME DEPT SALARY\n");
+    printf("\nSSN\tNAME\tDEPT\tSALARY\n");
     while(p != NULL)
     {
-        printf("%s %s %s %d\n",
+        printf("%s\t%s\t%s\t%d\n",
                p->ssn, p->name, p->dept, p->salary);
         p = p->right;
     }
 }
 
+/* Queue using DLL */
+NODE *queue(NODE *head)
+{
+    int ch;
+    do
+    {
+        printf("\nDLL used as QUEUE");
+        printf("\n1.Insert at Front");
+        printf("\n2.Delete from Rear");
+        printf("\n3.Display");
+        printf("\n4.Exit");
+        printf("\nEnter choice: ");
+        scanf("%d", &ch);
+
+        switch(ch)
+        {
+            case 1: head = in_front(head); break;
+            case 2: head = del_rear(head); break;
+            case 3: display(head); break;
+            case 4: break;
+            default: printf("Invalid Choice\n");
+        }
+    } while(ch != 4);
+
+    return head;
+}
+
+/* Main */
 int main()
 {
     int ch;
     NODE *head = NULL;
 
-    do {
-        printf("\n1.insert front 2.insert rear 3.del front 4.del rear 5.display 6.exit\n");
-        printf("enter your choice : ");
+    do
+    {
+        printf("\n1.Insert Front");
+        printf("\n2.Insert Rear");
+        printf("\n3.Delete Front");
+        printf("\n4.Delete Rear");
+        printf("\n5.Display");
+        printf("\n6.Queue");
+        printf("\n7.Exit");
+        printf("\nEnter choice: ");
         scanf("%d", &ch);
 
         switch(ch)
@@ -149,9 +189,11 @@ int main()
             case 3: head = del_front(head); break;
             case 4: head = del_rear(head); break;
             case 5: display(head); break;
-            case 6: exit(0);
+            case 6: head = queue(head); break;
+            case 7: exit(0);
+            default: printf("Invalid Choice\n");
         }
-    } while(ch != 6);
+    } while(ch != 7);
 
     return 0;
 }
