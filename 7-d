@@ -13,18 +13,17 @@ typedef struct student NODE;
 
 int count = 0;
 
-/* Create new node */
+/* Create node */
 NODE* getnode()
 {
-    NODE *newn = (NODE*)malloc(sizeof(NODE));
-    printf("\nEnter USN Name Branch Sem Phone: ");
-    scanf("%s %s %s %d %s", newn->usn, newn->name,
-          newn->branch, &newn->sem, newn->ph);
-    newn->next = NULL;
-    return newn;
+    NODE *n = (NODE*)malloc(sizeof(NODE));
+    printf("Enter USN Name Branch Sem Phone:\n");
+    scanf("%s %s %s %d %s", n->usn, n->name, n->branch, &n->sem, n->ph);
+    n->next = NULL;
+    return n;
 }
 
-/* Insert at front (PUSH for stack) */
+/* Insert Front */
 NODE* insert_front(NODE *head)
 {
     if(count == MAX)
@@ -32,14 +31,13 @@ NODE* insert_front(NODE *head)
         printf("List Full\n");
         return head;
     }
-    NODE *newn = getnode();
-    newn->next = head;
-    head = newn;
+    NODE *n = getnode();
+    n->next = head;
     count++;
-    return head;
+    return n;
 }
 
-/* Insert at rear (INSERT for queue) */
+/* Insert Rear */
 NODE* insert_rear(NODE *head)
 {
     if(count == MAX)
@@ -48,24 +46,24 @@ NODE* insert_rear(NODE *head)
         return head;
     }
 
-    NODE *newn = getnode();
+    NODE *n = getnode();
 
     if(head == NULL)
     {
         count++;
-        return newn;
+        return n;
     }
 
     NODE *p = head;
     while(p->next != NULL)
         p = p->next;
 
-    p->next = newn;
+    p->next = n;
     count++;
     return head;
 }
 
-/* Delete front (POP for stack, DELETE for queue) */
+/* Delete Front */
 NODE* delete_front(NODE *head)
 {
     if(head == NULL)
@@ -73,6 +71,7 @@ NODE* delete_front(NODE *head)
         printf("List Empty\n");
         return head;
     }
+
     NODE *temp = head;
     head = head->next;
     printf("Deleted: %s\n", temp->usn);
@@ -81,46 +80,48 @@ NODE* delete_front(NODE *head)
     return head;
 }
 
-/* Delete rear */
+/* Delete Rear */
 NODE* delete_rear(NODE *head)
 {
     NODE *p, *q;
 
     if(head == NULL)
+    {
+        printf("List Empty\n");
         return head;
+    }
 
     if(head->next == NULL)
     {
         free(head);
+        count--;
         return NULL;
     }
 
     p = head;
-
     while(p->next != NULL)
     {
         q = p;
         p = p->next;
     }
 
-    free(p);
     q->next = NULL;
-
-    printf("\nLast(end) entry is deleted");
+    free(p);
+    count--;
     return head;
 }
 
 /* Display */
 void display(NODE *head)
 {
-    NODE *p = head;
     if(head == NULL)
     {
-        printf("No data\n");
+        printf("No Data\n");
         return;
     }
 
-    printf("\nUSN  NAME  BRANCH  SEM  PHONE\n");
+    NODE *p = head;
+    printf("\nUSN NAME BRANCH SEM PHONE\n");
     while(p != NULL)
     {
         printf("%s %s %s %d %s\n",
@@ -129,7 +130,7 @@ void display(NODE *head)
     }
 }
 
-/* Stack Menu */
+/* Stack */
 NODE* stack(NODE *head)
 {
     int ch;
@@ -148,7 +149,7 @@ NODE* stack(NODE *head)
     return head;
 }
 
-/* Queue Menu */
+/* Queue */
 NODE* queue(NODE *head)
 {
     int ch;
@@ -168,7 +169,7 @@ NODE* queue(NODE *head)
 }
 
 /* Main */
-void main()
+int main()
 {
     NODE *head = NULL;
     int ch;
