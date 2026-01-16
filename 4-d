@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<string.h>
+
+/* Stack precedence */
+int F(char s)
+{
+    if(s=='+'||s=='-') return 2;
+    if(s=='*'||s=='/') return 4;
+    if(s=='^'||s=='$') return 5;
+    if(s=='(') return 0;
+    if(s=='#') return -1;
+    return 8;
+}
+
+/* Incoming precedence */
+int G(char s)
+{
+    if(s=='+'||s=='-') return 1;
+    if(s=='*'||s=='/') return 3;
+    if(s=='^'||s=='$') return 6;
+    if(s=='(') return 9;
+    if(s==')') return 0;
+    return 7;
+}
+
+void infix_postfix(char infix[], char postfix[])
+{
+    char stack[30], symbol;
+    int top = -1, i, j = 0;
+
+    stack[++top] = '#';
+
+    for(i = 0; i < strlen(infix); i++)
+    {
+        symbol = infix[i];
+        while(F(stack[top]) > G(symbol))
+            postfix[j++] = stack[top--];
+
+        if(F(stack[top]) != G(symbol))
+            stack[++top] = symbol;
+        else
+            top--;
+    }
+
+    while(stack[top] != '#')
+        postfix[j++] = stack[top--];
+
+    postfix[j] = '\0';
+}
+
+int main()
+{
+    char infix[20], postfix[20];
+
+    printf("Enter infix expression: ");
+    scanf("%s", infix);
+
+    infix_postfix(infix, postfix);
+
+    printf("Infix Expression  : %s\n", infix);
+    printf("Postfix Expression: %s\n", postfix);
+
+    return 0;
+}
