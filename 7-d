@@ -172,24 +172,28 @@ NODE* queue(NODE *head)
 int main()
 {
     NODE *head = NULL;
-    int ch;
+    int ch,n,i;
 
     while(1)
     {
-        printf("\n1.Insert Front\n2.Insert Rear\n3.Delete Front\n4.Delete Rear");
-        printf("\n5.Display\n6.Stack\n7.Queue\n8.Exit\n");
+        printf("\n 1.craete \n2.Insert Front\n3.Insert Rear\n4.Delete Front\n5.Delete Rear");
+        printf("\n6.Display\n7.Stack\n8.Queue\n9.Exit\n");
         scanf("%d",&ch);
 
         switch(ch)
-        {
-            case 1: head = insert_front(head); break;
-            case 2: head = insert_rear(head); break;
-            case 3: head = delete_front(head); break;
-            case 4: head = delete_rear(head); break;
-            case 5: display(head); break;
-            case 6: head = stack(head); break;
-            case 7: head = queue(head); break;
-            case 8: exit(0);
+        {   case 1:printf("enter the number of ele want to create : ");
+                    scanf("%d",&n);
+                    for(i=0;i<n;i++)
+                        head=insert_front(head);
+                        break;
+            case 2: head = insert_front(head); break;
+            case 3: head = insert_rear(head); break;
+            case 4: head = delete_front(head); break;
+            case 5: head = delete_rear(head); break;
+            case 6: display(head); break;
+            case 7: head = stack(head); break;
+            case 8: head = queue(head); break;
+            case 9: exit(0);
         }
     }
 }
