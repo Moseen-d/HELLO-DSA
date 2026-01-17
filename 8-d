@@ -167,30 +167,34 @@ NODE *queue(NODE *head)
 /* Main */
 int main()
 {
-    int ch;
+    int ch,i,n;
     NODE *head = NULL;
 
     do
     {
-        printf("\n1.Insert Front");
-        printf("\n2.Insert Rear");
+        printf("\n1.create ");
+        printf("\n2.Insert Front");
+        printf("\n3.Insert Rear");
         printf("\n3.Delete Front");
-        printf("\n4.Delete Rear");
-        printf("\n5.Display");
-        printf("\n6.Queue");
-        printf("\n7.Exit");
+        printf("\n5.Delete Rear");
+        printf("\n6.Display");
+        printf("\n7.Queue");
+        printf("\n8.Exit");
         printf("\nEnter choice: ");
         scanf("%d", &ch);
 
         switch(ch)
         {
-            case 1: head = in_front(head); break;
-            case 2: head = in_rear(head); break;
-            case 3: head = del_front(head); break;
-            case 4: head = del_rear(head); break;
-            case 5: display(head); break;
-            case 6: head = queue(head); break;
-            case 7: exit(0);
+            case 1:printf("number of nodes :");scanf("%d",&n);
+                    for(i=0;i<n;i++)
+                        head=in_front(head);break;
+            case 2: head = in_front(head); break;
+            case 3: head = in_rear(head); break;
+            case 4: head = del_front(head); break;
+            case 5: head = del_rear(head); break;
+            case 6: display(head); break;
+            case 7: head = queue(head); break;
+            case 8: exit(0);
             default: printf("Invalid Choice\n");
         }
     } while(ch != 7);
