@@ -97,13 +97,7 @@ NODE* deleteNode(NODE *root, int key)
             return temp;
         }
 
-        /* Node with two children */
-        temp = root->right;
-        while (temp->left != NULL)
-            temp = temp->left;
-
-        root->data = temp->data;
-        root->right = deleteNode(root->right, temp->data);
+        
     }
     return root;
 }
