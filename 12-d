@@ -1,0 +1,49 @@
+#include <stdio.h>
+#define MAX 10
+
+struct emp
+{
+    int id;
+    char name[15];
+};
+
+struct emp ht[MAX];
+
+int hash(int k)
+{
+    return k % MAX;
+}
+
+int main()
+{
+    int i, key, idx, ch = 1;
+
+    for(i = 0; i < MAX; i++)
+        ht[i].id = -1;
+
+    while(ch)
+    {
+        printf("\nEnter emp id: ");
+        scanf("%d", &key);
+
+        idx = hash(key);
+
+        while(ht[idx].id != -1)          // Linear Probing
+            idx = (idx + 1) % MAX;
+
+        ht[idx].id = key;
+
+        printf("Enter emp name: ");
+        scanf("%s", ht[idx].name);
+
+        printf("Continue (1/0): ");
+        scanf("%d", &ch);
+    }
+
+    printf("\nHTKey\tEmpID\tEmpName");
+    for(i = 0; i < MAX; i++)
+        if(ht[i].id != -1)
+            printf("\n%d\t%d\t%s", i, ht[i].id, ht[i].name);
+
+    return 0;
+}
